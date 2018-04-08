@@ -1,5 +1,10 @@
+import view.MyWindow;
+
 public class Main {
     public static void main(String[] argv) {
-        System.out.println("Let us begin...");
+
+        MyWindow win = new MyWindow("PGM");
+
+        win.show();
     }
 }
