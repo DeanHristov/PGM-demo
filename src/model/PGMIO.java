@@ -20,7 +20,7 @@ public class PGMIO {
      */
     private static final int MAXVAL = 255;
 
-    private PGMIO() {}
+    public PGMIO() {}
 
     /**
      * Reads a GrayScale image from a file in PGM format.
