@@ -17,30 +17,15 @@ public class PGMImage extends JPanel {
     }
 
     public void paint(Graphics g) {
-        BufferedImage image = new BufferedImage(IMAGE_WIDTH, IMAGE_HEIGHT, BufferedImage.TYPE_BYTE_GRAY);
+        BufferedImage image = new BufferedImage(IMAGE_WIDTH, IMAGE_HEIGHT, BufferedImage.TYPE_INT_RGB);
 
-        for (int y = 0; y < IMAGE_HEIGHT; y++) {
-            for (int x = 0; x < IMAGE_WIDTH; x++) {
-
-                // https://www.dyclassroom.com/image-processing-project/how-to-create-a-random-pixel-image-in-java
-                int rr = (int) (Math.random() * 256); // Debug - Random Red color
-                int gg = (int) (Math.random() * 256); // Debug - Random Green color
-                int bb = (int) (Math.random() * 256); // Debug - Random Blue color
-
-                Color newColor = new Color(rr, gg, bb); // Debug - Generate random color
-                image.setRGB(y, x, newColor.getRGB());
-
-//                System.out.println(IMAGE[y][x] + " X: " +x+ "Y: " +y);
-//                Color newColor = new Color(IMAGE[y][x], IMAGE[y][x], IMAGE[y][x]);
-//                image.setRGB(y, x, newColor.getRGB());
+        for (int x = 0; x < IMAGE_WIDTH; x++) {
+            for (int y = 0; y < IMAGE_HEIGHT; y++) {
+                int PIXEL_COLOR = IMAGE[x][y];
+                Color CURRENT_COLOR = new Color(PIXEL_COLOR, PIXEL_COLOR, PIXEL_COLOR);
+                image.setRGB(x, y, CURRENT_COLOR.getRGB());
             }
         }
         g.drawImage(image, 0, 0, null);
-    }
-
-    int toRGB(float value) {
-        int part = Math.round(value * 255);
-
-        return part * 0x10101;
     }
 }

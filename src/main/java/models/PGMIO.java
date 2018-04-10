@@ -35,35 +35,27 @@ public class PGMIO {
      * Reads a GrayScale image from a file in PGM format.
      *
      * @param file the PGM file read from
-     * @return two-dimensional byte array representation of the image
+     * @return two-dimensional pixel array /PGM pixels/ representation of the image
      * @throws IOException
      */
     public int[][] read(final File file) throws IOException {
         final BufferedInputStream stream = new BufferedInputStream(new FileInputStream(file));
-        // final DataInputStream dis = new DataInputStream(stream);
         try {
             if (!next(stream).equals(MAGIC_TYPE)) {
                 throw new IOException("The file " + file + " is not a binary PGM image.");
             }
 
-            IMAGE_HEIGHT = Integer.parseInt(next(stream));
             IMAGE_WIDTH = Integer.parseInt(next(stream));
+            IMAGE_HEIGHT = Integer.parseInt(next(stream));
             final int max = Integer.parseInt(next(stream));
 
             if (max < 0 || max > IMAGE_GRAY_LEVEL)
                 throw new IOException("The image's maximum gray value must be in range [0, " + IMAGE_GRAY_LEVEL + "].");
 
             final int[][] image = new int[IMAGE_WIDTH][IMAGE_HEIGHT];
-            for (int i = 0; i < IMAGE_WIDTH; ++i) {
-                for (int j = 0; j < IMAGE_HEIGHT; ++j) {
-                    final int p = stream.read();
-                    if (p == -1) {
-                        throw new IOException("Reached end-of-file prematurely.");
-                    } else if (p > max) {
-                        throw new IOException("Pixel value " + p + " outside of range [0, " + max + "].");
-                    }
-
-                    image[i][j] = p;
+            for (int j = 0; j < IMAGE_HEIGHT; ++j) {
+                for (int i = 0; i < IMAGE_WIDTH; ++i) {
+                    image[i][j] = Integer.parseInt(next(stream));
                 }
             }
             return image;

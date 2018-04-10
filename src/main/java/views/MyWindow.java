@@ -2,14 +2,10 @@ package views;
 
 import models.PGMIO;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.awt.image.BufferedImage;
 import java.io.*;
 
 public class MyWindow {
@@ -27,12 +23,7 @@ public class MyWindow {
         this.myWin = new JFrame();
         this.myBtn = new JButton();
 
-        myWin.addWindowListener(new WindowAdapter(){
-            public void windowClosing(WindowEvent ev) {
-                System.out.println("Closing...");
-                System.exit(0);
-            }
-        });
+        myWin.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
     }
 
     public void show () {
@@ -65,9 +56,10 @@ public class MyWindow {
                     final JFrame frame = new JFrame();
                     final PGMImage pgmFile = new PGMImage(myPGM.getImageWidth(), myPGM.getImageHeight(), image);
 
+                    frame.setLayout(new GridLayout(0,2));
                     frame.add(pgmFile);
-                    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                    frame.setSize(400,400);
+                    frame.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+                    frame.setSize(800,640);
                     frame.setLocationRelativeTo(null);
                     frame.setVisible(true);
 
