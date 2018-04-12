@@ -22,10 +22,16 @@ public class PGMImage extends JPanel {
         for (int x = 0; x < IMAGE_WIDTH; x++) {
             for (int y = 0; y < IMAGE_HEIGHT; y++) {
                 int PIXEL_COLOR = IMAGE[x][y];
+
+
                 Color CURRENT_COLOR = new Color(PIXEL_COLOR, PIXEL_COLOR, PIXEL_COLOR);
+                CURRENT_COLOR.brighter();
                 image.setRGB(x, y, CURRENT_COLOR.getRGB());
             }
         }
         g.drawImage(image, 0, 0, null);
     }
+
+
+
 }
