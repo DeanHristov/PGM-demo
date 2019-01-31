@@ -49,8 +49,6 @@ public class MyWindow {
 
         myBtn.setText(btnTitle);
         myBtn.setBounds(x, y, 120, 40);
-//        myBtn.setBackground(Color.decode("#4caf50"));
-//        myBtn.setForeground(Color.WHITE);
         myBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 addImageView();
@@ -67,15 +65,23 @@ public class MyWindow {
             PGMIO myPGM = new PGMIO();
             int image[][] = myPGM.read(myFile.getSelectedFile());
             JFrame frame = new JFrame();
-            JFrame frame1 = new JFrame();
-            PGMImage pgmFile = new PGMImage(myPGM.getImageWidth(), myPGM.getImageHeight(), image);
+            PGMImage pgmFile = new PGMImage(
+                    myPGM.getImageWidth(),
+                    myPGM.getImageHeight(),
+                    image,
+                    70,
+                    140,
+                    0,
+                    255
+            );
 
             frame.setLayout(new GridLayout(0,1));
             frame.add(pgmFile);
             frame.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
             frame.setSize(myPGM.getImageWidth(), myPGM.getImageHeight());
             frame.setLocationRelativeTo(null);
-            frame.setVisible(true);
+                frame.setVisible(true);
+
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -87,6 +93,7 @@ public class MyWindow {
         final JTextField r2 = new JTextField();
         final JTextField s1 = new JTextField();
         final JTextField s2 = new JTextField();
+
         JButton apply = new JButton("Apply");
         JButton save = new JButton("Save");
 
@@ -97,8 +104,15 @@ public class MyWindow {
                 S1 = Integer.parseInt(s1.getText());
                 S2 = Integer.parseInt(s2.getText());
 
-                System.out.println("R1: " + R1 + ", R2: " + R2 + ", S1: " + S1 + ", S2: " + S2);
-                addImageView();
+                if (R1 <= 255 && R2 <= 255 && S1 <= 255 && S2 <= 255) {
+                    System.out.println("R1: " + R1 + ", R2: " + R2 + ", S1: " + S1 + ", S2: " + S2);
+                }
+            }
+        });
+
+        save.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("TODO Save a file");
             }
         });
         frame1.setLayout(new GridLayout(5,1));
