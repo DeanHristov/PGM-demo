@@ -72,7 +72,7 @@ public class MyWindow {
     private void addImageView (int r1, int r2, int s1, int s2) {
         try {
             File openedFile = fileChooserView.showOpenFileChrooser();
-            PGMFileData     = myPGM.read(openedFile);
+            PGMFileData     = myPGM.readFile(openedFile);
             imageData       = getImage(PGMFileData, r1, r2, s1, s2);
 
             ImageView.setTitle("PGM Viewer");
@@ -139,7 +139,7 @@ public class MyWindow {
 
     private void onSave() throws IOException {
         File newFile = fileChooserView.showSaveFileChooser();
-        PGMModel.saveToFile(imageData.OUTPUT_IMAGE, newFile);
+        PGMModel.saveFile(imageData.OUTPUT_IMAGE, newFile);
     }
 
     private void onApply (int r1, int r2, int s1, int s2) {

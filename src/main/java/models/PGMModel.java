@@ -38,7 +38,7 @@ public class PGMModel {
      * @return two-dimensional pixel array /PGM pixels/ representation of the image
      * @throws IOException
      */
-    public int[][] read(final File file) throws IOException {
+    public int[][] readFile(final File file) throws IOException {
         final BufferedInputStream stream = new BufferedInputStream(new FileInputStream(file));
         try {
             if (!next(stream).equals(MAGIC_TYPE)) {
@@ -109,7 +109,7 @@ public class PGMModel {
      * @throws IllegalArgumentException
      * @throws IOException
      */
-    public static void saveToFile(final int[][] image, final File file) throws IOException {
+    public static void saveFile(final int[][] image, final File file) throws IOException {
         write(image, file, IMAGE_GRAY_LEVEL);
     }
 
@@ -126,29 +126,36 @@ public class PGMModel {
         if (maxval > IMAGE_GRAY_LEVEL)
             throw new IllegalArgumentException("The maximum gray value cannot exceed " + IMAGE_GRAY_LEVEL + ".");
         final BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(file));
+
+
         try {
             stream.write(MAGIC_TYPE.getBytes());
-            stream.write("\n".getBytes());
-            stream.write(Integer.toString(IMAGE_WIDTH).getBytes());
-            stream.write(" ".getBytes());
-            stream.write(Integer.toString(IMAGE_HEIGHT).getBytes());
-            stream.write("\n".getBytes());
-            stream.write(Integer.toString(maxval).getBytes());
-            stream.write("\n".getBytes());
+                    stream.write("\n".getBytes());
+                    stream.write(Integer.toString(IMAGE_WIDTH).getBytes());
+                    stream.write(" ".getBytes());
+                    stream.write(Integer.toString(IMAGE_HEIGHT).getBytes());
+                    stream.write("\n".getBytes());
+                    stream.write(Integer.toString(maxval).getBytes());
+                    stream.write("\n".getBytes());
 
-            System.out.println("I: " + image.length + " J: " + image[0].length);
-            for (int i = 0; i < image.length; ++i) {
-                for (int j = 0; j < image[0].length; ++j) {
 
-                    final int p = image[i][j];
+                    System.out.println("I: " + image.length + " J: " + image[0].length);
+                    for (int i = 0; i < IMAGE_HEIGHT; ++i) {
+                        for (int j = 0; j < IMAGE_WIDTH; ++j) {
+                            final int p = image[j][i];
+//                    count++;
 
                     if (p < 0 || p > maxval)
                         throw new IOException("Pixel value " + p + " outside of range [0, " + maxval + "].");
 
-                    stream.write(Integer.toString(image[i][j]).getBytes());
+                    stream.write(Integer.toString(p).getBytes());
                     stream.write(" ".getBytes());
+
+//                    if (count == 17){
+//                        stream.write("\n".getBytes());
+//                        count = 0;
+//                    }
                 }
-                stream.write("\n".getBytes());
             }
         } finally { stream.close(); }
     }
