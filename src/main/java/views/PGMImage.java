@@ -6,9 +6,10 @@ import java.awt.image.BufferedImage;
 import javax.swing.*;
 
 public class PGMImage extends JPanel {
+    public int IMAGE[][];
+    public int OUTPUT_IMAGE[][];
     private int IMAGE_WIDTH;
     private int IMAGE_HEIGHT;
-    private int IMAGE[][];
     private int R1;
     private int R2;
     private int S1;
@@ -18,6 +19,7 @@ public class PGMImage extends JPanel {
         this.IMAGE_WIDTH  = w;
         this.IMAGE_HEIGHT = h;
         this.IMAGE        = pgm;
+        this.OUTPUT_IMAGE = new int[w][h];
         this.R1           = r1;
         this.R2           = r2;
         this.S1           = s1;
@@ -27,16 +29,15 @@ public class PGMImage extends JPanel {
     public void paint(Graphics g) {
         BufferedImage image = new BufferedImage(IMAGE_WIDTH, IMAGE_HEIGHT, BufferedImage.TYPE_INT_RGB);
 
-        for (int x = 0; x < IMAGE_WIDTH; x++) {
+        for (int x = 0; x < IMAGE_WIDTH; x++)
             for (int y = 0; y < IMAGE_HEIGHT; y++) {
                 int PIXEL_COLOR = contrastStretching(IMAGE[x][y], R1, R2, S1, S2);
-
 
                 Color CURRENT_COLOR = new Color(PIXEL_COLOR, PIXEL_COLOR, PIXEL_COLOR);
                 CURRENT_COLOR.brighter();
                 image.setRGB(x, y, CURRENT_COLOR.getRGB());
+                OUTPUT_IMAGE[x][y] = PIXEL_COLOR;
             }
-        }
         g.drawImage(image, 0, 0, null);
     }
 
