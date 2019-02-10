@@ -6,6 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
 import java.io.*;
 
 public class MyWindow {
@@ -17,19 +18,18 @@ public class MyWindow {
     private FileChooser fileChooserView;
     private int PGMFileData[][];
 
-    private final int WINDOW_WIDTH  = 500;
+    private final int WINDOW_WIDTH = 500;
     private final int WINDOW_HEIGHT = 500;
 
-    public MyWindow () {
-        this.PGMViewer    = new JFrame();
-        this.ImageView    = new JFrame();
+    public MyWindow() {
+        this.PGMViewer = new JFrame();
+        this.ImageView = new JFrame();
         this.controlsView = new JFrame();
-        this.myPGM        = new PGMModel();
+        this.myPGM = new PGMModel();
         this.fileChooserView = new FileChooser();
-
     }
 
-    public void showPGMViewer () {
+    public void showPGMViewer() {
         JButton btnLoadFile = new JButton();
 
         final int btnLoadFileX = ((WINDOW_WIDTH - 120) / 2);
@@ -44,6 +44,12 @@ public class MyWindow {
 
         btnLoadFile.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                ImageView.getContentPane().removeAll();
+                ImageView.dispatchEvent(new WindowEvent(ImageView, WindowEvent.WINDOW_CLOSING));
+
+                controlsView.getContentPane().removeAll();
+                controlsView.dispatchEvent(new WindowEvent(controlsView, WindowEvent.WINDOW_CLOSING));
+
                 addImageView(255, 255, 255, 255);
                 showControlsPanel();
             }
@@ -57,7 +63,7 @@ public class MyWindow {
         PGMViewer.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
     }
 
-    private PGMImage getImage (int image[][], int r1, int r2, int s1, int s2) {
+    private PGMImage getImage(int image[][], int r1, int r2, int s1, int s2) {
         return new PGMImage(
                 myPGM.getImageWidth(),
                 myPGM.getImageHeight(),
@@ -69,14 +75,14 @@ public class MyWindow {
         );
     }
 
-    private void addImageView (int r1, int r2, int s1, int s2) {
+    private void addImageView(int r1, int r2, int s1, int s2) {
         try {
             File openedFile = fileChooserView.showOpenFileChrooser();
-            PGMFileData     = myPGM.readFile(openedFile);
-            imageData       = getImage(PGMFileData, r1, r2, s1, s2);
+            PGMFileData = myPGM.readFile(openedFile);
+            imageData = getImage(PGMFileData, r1, r2, s1, s2);
 
             ImageView.setTitle("PGM Viewer");
-            ImageView.setLayout(new GridLayout(0,1));
+            ImageView.setLayout(new GridLayout(0, 1));
             ImageView.add(imageData);
             ImageView.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
             ImageView.setSize(myPGM.getImageWidth() + 30, myPGM.getImageHeight() + 30);
@@ -101,10 +107,10 @@ public class MyWindow {
         apply.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 onApply(
-                    Integer.parseInt(r1.getText()),
-                    Integer.parseInt(r2.getText()),
-                    Integer.parseInt(s1.getText()),
-                    Integer.parseInt(s2.getText())
+                        Integer.parseInt(r1.getText()),
+                        Integer.parseInt(r2.getText()),
+                        Integer.parseInt(s1.getText()),
+                        Integer.parseInt(s2.getText())
                 );
             }
         });
@@ -119,7 +125,7 @@ public class MyWindow {
             }
         });
         controlsView.setTitle("Controls View");
-        controlsView.setLayout(new GridLayout(5,1));
+        controlsView.setLayout(new GridLayout(5, 1));
         controlsView.add(new JLabel("R1: "));
         controlsView.add(r1);
         controlsView.add(new JLabel("R2: "));
@@ -142,12 +148,12 @@ public class MyWindow {
         PGMModel.saveFile(imageData.OUTPUT_IMAGE, newFile);
     }
 
-    private void onApply (int r1, int r2, int s1, int s2) {
+    private void onApply(int r1, int r2, int s1, int s2) {
         if (r1 <= 255 && r2 <= 255 && s1 <= 255 && s2 <= 255) {
             ImageView.getContentPane().remove(imageData);
             ImageView.repaint();
 
-            imageData   = getImage(PGMFileData, r1, r2, s1, s2);
+            imageData = getImage(PGMFileData, r1, r2, s1, s2);
             PGMFileData = imageData.IMAGE;
 
             ImageView.add(imageData);
